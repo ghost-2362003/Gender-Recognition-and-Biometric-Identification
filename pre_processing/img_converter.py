@@ -6,7 +6,7 @@ from guided_filter_pytorch.guided_filter import GuidedFilter
 def createLowFrequencyComponent(img, guided_filter_Radius = 10):
     
     image = cv2.imread(img)
-    print(type(image))
+    #print(type(image))
     grayscale_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     img_tensor = torch.from_numpy(image).float().permute(2, 0, 1).unsqueeze(0) / 255.0
     gray_tensor = torch.from_numpy(grayscale_image).float().unsqueeze(0).unsqueeze(0) / 255.0
@@ -44,9 +44,9 @@ def createHighFrequencyComponent(img, epsilon=0.01):
     
     return high_frequency_image
     
-if __name__ == "__main__":
+#if __name__ == "__main__":
     
 #    image = cv2.imread("G:/11k_hands/dataset/train/male/Hand_0000056.jpg")
     
-    createLowFrequencyComponent("G:/11k_hands/dataset/train/male/Hand_0000056.jpg")
-    createHighFrequencyComponent("G:/11k_hands/dataset/train/male/Hand_0000056.jpg")
+#    createLowFrequencyComponent("G:/11k_hands/dataset/train/male/Hand_0000056.jpg")
+#    createHighFrequencyComponent("G:/11k_hands/dataset/train/male/Hand_0000056.jpg")
