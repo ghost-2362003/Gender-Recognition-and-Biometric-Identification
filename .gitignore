@@ -5,3 +5,4 @@ share
 dataset
 Include
 model_files
+*.pth
