@@ -22,6 +22,6 @@ class TwoStreamNet(nn.Module):
         f2 = self.stream2(detailed_img)
 
         x = torch.concat((f1, f2), dim=1)
-        x = self.sequential(x)
+        x = self.sequential[0](x)
 
-        return x
+        return f1, f2, x

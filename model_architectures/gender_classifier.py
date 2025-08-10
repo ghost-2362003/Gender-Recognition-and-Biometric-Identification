@@ -1,7 +1,7 @@
 from sklearn.svm import SVC
 from model_architectures.stream1 import FirstStream
 from model_architectures.stream2 import SecondStream
-from model_architectures.modifiedTwoStreamNet import modifiedTwoStreamNet
+from model_architectures.TwoStreamNet import TwoStreamNet
 from pre_processing.img_converter import createHighFrequencyComponent, createLowFrequencyComponent
 import matplotlib.image as img
 import torch
@@ -22,8 +22,8 @@ stream_2.load_state_dict(torch.load('G:/11k_hands/model_files/stream2_model.pth'
                                     ), 
                          strict=False)
 
-classifier = modifiedTwoStreamNet(stream_1, stream_2).to('cpu')
-classifier.load_state_dict(torch.load('G:\11k_hands\model_files\joint_model.pth', 
+classifier = TwoStreamNet(stream_1, stream_2).to('cpu')
+classifier.load_state_dict(torch.load('G:/11k_hands/model_files/joint_model.pth', 
                                       map_location=torch.device('cpu')
                                       ), 
                            strict=False)
