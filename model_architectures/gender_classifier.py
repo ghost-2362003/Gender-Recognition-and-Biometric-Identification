@@ -3,7 +3,6 @@ from model_architectures.stream1 import FirstStream
 from model_architectures.stream2 import SecondStream
 from model_architectures.TwoStreamNet import TwoStreamNet
 from pre_processing.img_converter import createHighFrequencyComponent, createLowFrequencyComponent
-import matplotlib.image as img
 import torch
 import numpy as np
 import pandas as pd
@@ -11,9 +10,7 @@ import cv2
 from torchvision.datasets import ImageFolder
 from torchvision import transforms
 from tqdm import tqdm
-from torch import nn
 from pathlib import Path
-import os
 
 path = Path()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
