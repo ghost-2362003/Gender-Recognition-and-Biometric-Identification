@@ -6,31 +6,41 @@ from pre_processing.img_converter import createHighFrequencyComponent, createLow
 import matplotlib.image as img
 import torch
 import numpy as np
+import pandas as pd
 import cv2
 from torchvision.datasets import ImageFolder
 from torchvision import transforms
+from tqdm import tqdm
+from torch import nn
+from pathlib import Path
+import os
 
+path = Path()
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # create the stream1 and stream2 model objects and load model file
 stream_1 = FirstStream()
 stream_2 = SecondStream()
 stream_1.load_state_dict(torch.load('G:/11k_hands/model_files/stream1_model.pth',
-                                    map_location=torch.device('cpu')
+                                    map_location=device
                                     ), 
                          strict=False)
 stream_2.load_state_dict(torch.load('G:/11k_hands/model_files/stream2_model.pth', 
-                                    map_location=torch.device('cpu')
+                                    map_location=device
                                     ), 
                          strict=False)
 
-classifier = TwoStreamNet(stream_1, stream_2).to('cpu')
+classifier = TwoStreamNet(stream_1, stream_2).to(device)
 classifier.load_state_dict(torch.load('G:/11k_hands/model_files/joint_model.pth', 
-                                      map_location=torch.device('cpu')
+                                      map_location=device
                                       ), 
                            strict=False)
 
 # create the dataloader
 BATCH_SIZE = 32
 data_root = 'G:/11k_hands/dataset/train'
+test_root = Path("G:/11k_hands/dataset/test")
+vectors = []
+labels = []
 
 # override the ImageFolder to include the custom function
 class CustomImageFolder(ImageFolder):
@@ -63,3 +73,22 @@ base_transform = transforms.Compose([
 dataset = CustomImageFolder(root=data_root, transform=base_transform)
 dataloader = torch.utils.data.DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
 
+# creating the feature file for storing the outputs 
+classifier.eval()
+loop = tqdm(dataloader, total=len(dataloader))
+
+for (blurred_img, detailed_img, label) in loop:
+    blurred_img, detailed_img, label = blurred_img.to(device), detailed_img.to(device), label.to(device)
+
+    f1, f2, x = classifier(blurred_img, detailed_img)
+    concatenated_feature = torch.concat([f1, f2], dim=1)
+    concatenated_feature = torch.concat([concatenated_feature, x], dim=1)
+    
+    vectors.append(concatenated_feature.cpu().detach().numpy())
+    labels.append(label.cpu().detach().numpy())
+
+# save the features and labels to a file
+df = pd.DataFrame(vectors)
+df['Label'] = labels
+
+df.to_csv('G:/11k_hands/features.csv', index=False)
