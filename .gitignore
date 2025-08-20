@@ -2,7 +2,7 @@ Lib
 pyvenv.cfg
 Scripts
 share
-dataset
+*.jpg
 Include
 model_files
 *.pth

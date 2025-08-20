@@ -1,4 +1,3 @@
-from sklearn.svm import SVC
 from model_architectures.stream1 import FirstStream
 from model_architectures.stream2 import SecondStream
 from model_architectures.TwoStreamNet import TwoStreamNet
