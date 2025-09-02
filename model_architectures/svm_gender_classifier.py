@@ -4,8 +4,8 @@ from sklearn.decomposition import PCA
 import pandas as pd
 
 # creating the dataframes
-train_data = pd.read_csv('../dataset/train_features.csv')
-test_data = pd.read_csv('../dataset/test_features.csv')
+train_data = pd.read_csv('dataset/train_features.csv')
+test_data = pd.read_csv('dataset/test_features.csv')
 
 test_labels = test_data['Label']
 test_data.drop(columns=['Label'], inplace=True)
