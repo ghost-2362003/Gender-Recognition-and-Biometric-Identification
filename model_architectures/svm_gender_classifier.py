@@ -33,4 +33,9 @@ svm_classifier = load('model_files/svm_classifier.jobllib')
 y_pred = svm_classifier.predict(pca_test)
 
 generate_heatmap(y_test, y_pred)
-generate_reports(y_pred, y_test, svm_classifier.decision_function(pca_test))
+report, accuracy, auc_score = list(generate_reports(y_pred, y_test, svm_classifier.decision_function(pca_test)))
+
+print("=== Classification Report ===")
+print(report)
+print(f"Accuracy: {accuracy:.4f}")
+print(f"ROC AUC Score: {auc_score:.4f}")
