@@ -34,7 +34,7 @@ classifier.load_state_dict(torch.load('G:/11k_hands/model_files/joint_model.pth'
 # create the dataloader
 BATCH_SIZE = 1
 data_root = 'G:/11k_hands/dataset/train'
-test_root = Path("G:/11k_hands/dataset/test")
+test_root = "G:/11k_hands/dataset/test"
 vectors = []
 labels = []
 
